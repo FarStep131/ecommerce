@@ -23,35 +23,113 @@
   </head>
 
   <body class="flex flex-col h-screen justify-between">
-    <div class="bg-gray-700">
-      <div class="max-w-screen-lg mx-auto py-3 px-3 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between flex-wrap">
-          <div class="flex-1 flex items-center">
-            <span class="flex p-2 rounded-lg bg-gray-900">
-              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            </span>
-            <p class="ml-3 font-medium text-white truncate">
-              Rails <%= Rails::VERSION::STRING %> and Ruby <%= ENV["RUBY_VERSION"] %>
-            </p>
+    <div class='bg-gray-900 mb-8 z-10'>
+      <div class='container mx-auto flex max-w-4xl items-center px-2 py-5'>
+        <div class='mx-auto flex w-full flex-wrap items-center'>
+          <div class='flex w-full justify-center font-extrabold text-white lg:w-1/2 lg:justify-start'>
+            <%= link_to root_path, class: "text-2xl text-gray-900 no-underline hover:text-gray-900 hover:no-underline" do %>
+              🛍️ &nbsp; <span class=' text-gray-200'>ECommerce</span>
+            <% end %>
           </div>
-          <div class="mt-2 order-3 w-full sm:mt-0 sm:w-auto">
-            <div class="rounded-md shadow-sm">
-              <span class="flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-gray-500">
-                RAILS_ENV = <%= Rails.env %>
-              </span>
-            </div>
+          <div class='flex w-full content-center justify-between pt-2 lg:w-1/2 lg:justify-end lg:pt-0'>
+            <ul class='list-reset flex flex-1 items-center justify-center lg:flex-none h-12'>
+              <% if admin_signed_in? %>
+                <li class='no-underline'>
+                  <div class="flex items-center justify-center">
+                    <div class="relative inline-block text-left dropdown">
+                      <button class="inline-flex justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-gray-700 transition duration-150 ease-in-out  rounded-md" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
+                        <svg class="h-6 w-6" id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                          <path fill="white" d="M288 320a224 224 0 1 0 448 0 224 224 0 1 0-448 0zm544 608H160a32 32 0 0 1-32-32v-96a160 160 0 0 1 160-160h448a160 160 0 0 1 160 160v96a32 32 0 0 1-32 32z">
+                          </path>
+                        </svg>
+                      </button>
+                      <div class="opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 scale-95">
+                        <div class="absolute right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
+                          <div class="px-4 py-3">         
+                            <p class="text-sm leading-5">Signed in as</p>
+                            <p class="text-sm font-medium leading-5 text-gray-900 truncate"><%= current_admin.email %></p>
+                          </div>
+                          <div class="py-1">
+                            <%= link_to destroy_admin_session_path, data: { turbo_method: :delete }, class: "text-gray-700 flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" do %>
+                              Sign out
+                            <% end %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              <% elsif customer_signed_in? %>
+                <li class='no-underline'>
+                  <div class="flex items-center justify-center">
+                    <div class="relative inline-block text-left dropdown">
+                      <button class="inline-flex justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-gray-700 transition duration-150 ease-in-out  rounded-md" type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
+                        <svg class="h-6 w-6" id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                          <path fill="white" d="M288 320a224 224 0 1 0 448 0 224 224 0 1 0-448 0zm544 608H160a32 32 0 0 1-32-32v-96a160 160 0 0 1 160-160h448a160 160 0 0 1 160 160v96a32 32 0 0 1-32 32z">
+                          </path>
+                        </svg>
+                      </button>
+                      <div class="opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 scale-95">
+                        <div class="absolute right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
+                          <div class="px-4 py-3">         
+                            <p class="text-sm leading-5">Signed in as</p>
+                            <p class="text-sm font-medium leading-5 text-gray-900 truncate"><%= current_customer.email %></p>
+                          </div>
+                          <div class="py-1">
+                            <%= link_to edit_customer_registration_path, class: "text-gray-700 flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" do %>
+                              Account settings
+                            <% end %>
+                          </div>
+                          <div class="py-1">
+                            <%= link_to destroy_customer_session_path, data: { turbo_method: :delete }, class: "text-gray-700 flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" do %>
+                              Sign out
+                            <% end %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              <% else %>
+                <li class='px-4 text-white no-underline'>
+                  <%= link_to "Sign Up", new_customer_registration_path %>
+                </li>
+                <li class='px-4 text-white no-underline'>
+                  <%= link_to "Sign In", new_customer_session_path %>
+                </li>
+              <% end %>
+            </ul>
           </div>
         </div>
       </div>
     </div>
 
-    <main class="max-w-screen-lg mx-auto mb-auto">
+    <% if flash[:notice] %>
+      <div class="p-4 mb-4 text-md text-blue-700 text-center font-bold">
+        <%= notice %>
+      </div>
+    <% end %>
+    <% if flash[:alert] %>
+      <div class="p-4 mb-4 text-md text-red-700 text-center font-bold">
+        <%= alert %>
+      </div>
+    <% end %>
+
+    <main class="container mx-auto sm:w-10/12 lg:w-9/12 mb-8 z-0">
       <%= yield %>
     </main>
 
+    <style>
+    .dropdown:focus-within .dropdown-menu {
+      opacity:1;
+      transform: translate(0) scale(1);
+      visibility: visible;
+    }
+    </style>
+
     <footer class="text-center mt-6 pb-6 h-10">
       <p class="text-gray-500">
-        Coded with <svg class="h-5 w-5 text-red-600 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg> by <a class="border-b mb-1" href="https://nickjanetakis.com">Nick Janetakis</a>
+        Copyright © FarStep All Rights Reserved.
       </p>
     </footer>
   </body>

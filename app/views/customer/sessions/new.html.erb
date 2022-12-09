@@ -1,26 +1,24 @@
-<h2>Log in</h2>
+<div class="mb-6 text-center">
+  <span class="text-3xl font-bold">
+    Sign In
+  </span>
+</div>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+<div class='flex flex-wrap justify-center mb-6'>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "w-11/12 md:w-10/12 xl:w-8/12" }, data: { turbo: false } )  do |f| %>
+    <%= render "customer/shared/error_messages", resource: resource %>
+    <div class="mb-6">
+      <%= f.label :email, class: "mb-2 block text-sm text-gray-600" %>
+      <%= f.email_field :email, class: "w-full rounded-md border border-gray-300 py-2 px-3 placeholder:text-gray-300 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-100" %>
     </div>
+    <div class="mb-6">
+      <%= f.label :password, class: "mb-2 block text-sm text-gray-600" %>
+      <%= f.password_field :password, class: "w-full rounded-md border border-gray-300 py-2 px-3 placeholder:text-gray-300 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-100" %>
+    </div>
+    <%= f.submit 'Sign In', class: "inline-flex w-full items-center justify-center rounded-md bg-indigo-500 p-3 text-white duration-100 ease-in-out hover:bg-indigo-600 focus:outline-none cursor-pointer" %>
   <% end %>
+</div>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
-
-<%= render "customer/shared/links" %>
+<div class="text-center">
+  <%= render "customer/shared/links" %>
+</div>
