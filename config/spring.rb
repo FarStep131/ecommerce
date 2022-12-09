@@ -1,4 +1,4 @@
 Spring.watch(
-  "tmp/restart.txt",
-  "tmp/caching-dev.txt"
+  'tmp/restart.txt',
+  'tmp/caching-dev.txt'
 )

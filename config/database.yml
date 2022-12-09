@@ -1,7 +1,7 @@
 default: &default
   adapter: "postgresql"
   encoding: "unicode"
-  database: "<%= ENV.fetch("POSTGRES_DB") { "hello" } %>"
+  database: "<%= ENV.fetch("POSTGRES_DB") { "ecommerce" } %>"
   username: "<%= ENV.fetch("POSTGRES_USER") { "hello" } %>"
   password: "<%= ENV.fetch("POSTGRES_PASSWORD") { "password" } %>"
   host: "<%= ENV.fetch("POSTGRES_HOST") { "postgres" } %>"
@@ -11,12 +11,12 @@ default: &default
 
 development:
   <<: *default
-  database: <%= ENV.fetch("POSTGRES_DB") { "hello" } %>_development
+  database: <%= ENV.fetch("POSTGRES_DB") { "ecommerce" } %>_development
 
 test:
   <<: *default
-  database: <%= ENV.fetch("POSTGRES_DB") { "hello" } %>_test
+  database: <%= ENV.fetch("POSTGRES_DB") { "ecommerce" } %>_test
 
 production:
   <<: *default
-  database: <%= ENV.fetch("POSTGRES_DB") { "hello" } %>_production
+  database: <%= ENV.fetch("POSTGRES_DB") { "ecommerce" } %>_production
