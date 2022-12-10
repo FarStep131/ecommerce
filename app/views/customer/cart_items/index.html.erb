@@ -1,0 +1,98 @@
+<div class="mb-8 text-center">
+  <span class="text-3xl font-bold">
+    Shopping Cart
+  </span>
+</div>
+
+<% if @cart_items.count == 0 %>
+  <div class='mx-auto max-w-3xl'>
+    <p class='mb-8 text-xl text-center'>No item</p>
+    <div class='flex justify-center'>
+      <%= link_to products_path, class: 'group inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 p-0.5 font-medium text-gray-900 hover:text-white focus:ring-4 focus:ring-blue-300 group-hover:from-purple-600 group-hover:to-blue-500' do %>
+        <span class='rounded-md bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0'>
+          Find Products
+        </span>
+      <% end %>
+    </div>
+  </div>
+<% else %>
+  <div class="xl:flex">
+    <div class="px-6 flex justify-center mb-7 xl:w-2/3">
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+              <th class="py-4 px-8">product</th>
+              <th class="py-4 px-8">price</th>
+              <th class="py-4 px-8">quantity</th>
+              <th class="py-4 px-8">total</th>
+              <th class="py-4 px-8"></th>
+            </tr>
+          </thead>
+          <tbody class="text-center">
+            <% @cart_items.each do |cart_item| %>
+              <tr class="focus:outline-none h-16 border border-gray-100 rounded">
+                <td class="p-3 whitespace-nowrap">
+                  <div class="flex flex-col justify-center mx-6">
+                    <span class="font-bold text-xl"><%= cart_item.product.name %></span>
+                    <span class="text-sm"><%= cart_item.product.stock %> left in stock</span>
+                  </div>
+                </td>
+                <td class="p-3">
+                  <span class="text-lg"><%= number_to_currency(cart_item.product.price, unit: "¥", strip_insignificant_zeros: true) %></span>
+                </td>
+                <td class="p-3">
+                  <div class="flex justify-center">
+                    <%= link_to decrease_cart_item_path(cart_item), data: { "turbo-method": :patch }, class: "flex justify-center" do %>
+                      <svg class="fill-current text-red-500 w-3" viewBox="0 0 448 512">
+                        <path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"/>
+                      </svg>
+                    <% end %>
+                    <span class="mx-5 text-lg"><%= cart_item.quantity %></span>
+                    <% unless cart_item.quantity >= cart_item.product.stock %>
+                      <%= link_to increase_cart_item_path(cart_item), data: { "turbo-method": :patch }, class: "flex justify-center" do %>
+                        <svg class="fill-current text-blue-500 w-3" viewBox="0 0 448 512">
+                          <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"/>
+                        </svg>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </td>
+                <td class="p-3">
+                  <span class="text-lg"><%= number_to_currency(cart_item.line_total, unit: "¥", strip_insignificant_zeros: true) %></span>
+                </td>
+                <td class="p-3">
+                  <div class="flex justify-center">
+                    <%= link_to cart_item_path(cart_item), data: { "turbo-method": :delete, "turbo_confirm": 'Are you sure?' } do %>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash text-red-500" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                      </svg>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="px-6 xl:w-1/3">
+      <h1 class="font-semibold text-2xl border-b pb-6 text-center">
+        Cart Summary
+      </h1>
+      <div class="flex justify-between my-6">
+        <span class="font-semibold text-lg uppercase">subtotal</span>
+        <span class="font-semibold text-lg"><%= number_to_currency(@total, unit: "¥", strip_insignificant_zeros: true) %></span>
+      </div>
+      <div class="flex justify-between my-6">
+        <span class="font-semibold text-lg uppercase">postage</span>
+        <span class="font-semibold text-lg"><%= number_to_currency(POSTAGE, unit: "¥", strip_insignificant_zeros: true) %></span>
+      </div>
+      <div class="flex justify-between my-6">
+        <span class="font-semibold text-lg uppercase">total</span>
+        <span class="font-semibold text-lg"><%= number_to_currency(@total + POSTAGE, unit: "¥", strip_insignificant_zeros: true) %></span>
+      </div>
+    </div>
+  </div>
+<% end %>

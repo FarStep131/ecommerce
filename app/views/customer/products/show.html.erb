@@ -25,6 +25,12 @@
             <span class="bg-red-100 text-red-800 text-xs font-semibold p-2 rounded">Out of stock</span>
           <% end %>
         </div>
+        <% if @product.stock > 0 %>
+          <%= form_with model: @cart_item, data: { turbo: false } do |f| %>
+            <%= f.hidden_field :product_id, :value => @product.id %>
+            <%= f.submit "Add to Cart", class:"w-full cursor-pointer focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" %>
+          <% end %>
+        <% end %>
       </div>
     </div>
   </div>
