@@ -1,0 +1,87 @@
+<div class="px-6">
+  <div class="flex justify-start item-start space-y-2 flex-col mb-8">
+    <h1 class="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">Customer ID #<%= @customer.id %></h1>
+    <p class="text-base font-medium leading-6 text-gray-600">CreatedAt: <%= l @customer.created_at, format: :short %></p>
+    <p class="text-base font-medium leading-6 text-gray-600">UpdatedAt: <%= l @customer.updated_at, format: :short %></p>
+  </div> 
+  <div class="flex flex-col xl:flex-row jusitfy-center  w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">
+    <div class="flex flex-col justify-start items-start w-full space-y-4 xl:space-y-8">
+      <div class="bg-gray-50 w-full h-fit px-4 py-6 md:p-6 xl:p-8">
+        <h3 class="text-xl font-semibold leading-5 text-gray-800">Customer</h3>
+        <div class="flex justify-center w-full xl:justify-start items-center space-x-4 py-8 border-b border-gray-200">
+          <div class="flex justify-start items-start flex-col space-y-2">
+            <p class="text-base font-semibold leading-4 text-left text-gray-800">
+              <%= @customer.name %>
+            </p>
+            <p class="text-sm leading-5 text-gray-600">
+              <%= @customer.orders.count %> Previous Orders
+            </p>
+          </div>
+        </div>
+        <div class="flex justify-center text-gray-800 xl:justify-start items-center space-x-4 py-4 border-b border-gray-200 w-full">
+          <svg class="w-5" viewBox="0 0 8 6" xmlns="http://www.w3.org/2000/svg">
+            <path d="m0 0h8v6h-8zm.75 .75v4.5h6.5v-4.5zM0 0l4 3 4-3v1l-4 3-4-3z"/>
+          </svg>
+          <p class="text-sm"><%= @customer.email %></p>
+        </div>
+      </div>
+      <div class="flex justify-center flex-col md:flex-row items-stretch w-full space-y-4 md:space-y-0 md:space-x-6 xl:space-x-8">
+        <div class="px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 space-y-6">
+          <h3 class="text-xl font-semibold leading-5 text-gray-800">Customer Status</h3>
+          <p>Current Status:
+            <% if @customer.status === "normal" %>
+              <span class="bg-blue-100 text-blue-800 text-xs font-semibold p-2 rounded">Normal</span>
+            <% elsif @customer.status === "withdrawn" %>
+              <span class="bg-orange-100 text-orange-500 text-xs font-semibold p-2 rounded">Withdrawn</span>
+            <% else %>
+              <span class="bg-red-100 text-red-800 text-xs font-semibold p-2 rounded">Banned</span>
+            <% end %>
+          </p>
+          <%= form_with model: @customer, url: admin_customer_path(@customer), local: true  do |f|  %>
+            <div class="mb-6">
+              <%= f.select :status, Customer.statuses.keys.to_a, {}, {class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 appearance-none"} %>
+            </div>
+            <%= f.submit class: "inline-flex w-full items-center justify-center rounded-md bg-indigo-500 p-3 text-white duration-100 ease-in-out hover:bg-indigo-600 focus:outline-none cursor-pointer" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col justify-start items-start bg-gray-50 px-4 py-6 md:py-6 md:p-6 xl:p-8 w-full overflow-x-auto">
+    <h3 class="mb-4 text-xl font-semibold leading-5 text-gray-800">Order History</h3>
+      <% if @customer.orders.size > 0 %>
+      <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+        <thead class="align-bottom">
+          <tr>
+            <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-lg border-b-solid tracking-none whitespace-nowrap text-slate-400">Billings</th>
+            <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-lg border-b-solid tracking-none whitespace-nowrap text-slate-400">Status</th>
+            <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-lg border-b-solid tracking-none whitespace-nowrap text-slate-400">Order date</th>
+            <th class="px-6 py-3 font-semibold capitalize align-middle bg-transparent border-b border-gray-200 border-solid shadow-none tracking-none whitespace-nowrap text-slate-400"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @customer.orders.latest.each do |order| %>
+            <tr>
+              <td class="p-3 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                <p class="font-semibold leading-tight text-md"><%= number_to_currency(order.billing_amount, unit: "¥", strip_insignificant_zeros: true) %></p>
+              </td>
+              <td class="p-3 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
+                <span class="bg-blue-100 text-blue-800 text-xs font-semibold p-2 rounded"><%= order.status %></span>
+              </td>
+              <td class="p-3 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                <span class="font-semibold leading-tight text-md"><%= l order.created_at, format: :short %></span>
+              </td>
+              <td class="p-3 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                <%= link_to admin_order_path(order), class: "font-semibold leading-tight text-sm text-slate-400" do %>
+                  Details
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <% else %>
+        <p>No history</p>
+      <% end %>
+    </div>
+  </div>
+</div>
