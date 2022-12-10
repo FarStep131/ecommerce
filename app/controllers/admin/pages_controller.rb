@@ -12,7 +12,7 @@ class Admin::PagesController < ApplicationController
 
   def get_orders(params)
     if !params[:status].present? || !Order.statuses.keys.to_a.include?(params[:status])
-      return [Order.latest,
+      return [Order.eager_load(:customer).latest,
               'all']
     end
 
@@ -22,15 +22,15 @@ class Admin::PagesController < ApplicationController
   def get_by_enum_value(status)
     case status
     when 'waiting_payment'
-      [Order.latest.waiting_payment, 'waiting_payment']
+      [Order.waiting_payment.eager_load(:customer).latest, 'waiting_payment']
     when 'confirm_payment'
-      [Order.latest.confirm_payment, 'confirm_payment']
+      [Order.confirm_payment.eager_load(:customer).latest, 'confirm_payment']
     when 'shipped'
-      [Order.latest.shipped, 'shipped']
+      [Order.shipped.eager_load(:customer).latest, 'shipped']
     when 'out_of_delivery'
-      [Order.latest.out_of_delivery, 'out_of_delivery']
+      [Order.latest.out_of_delivery.eager_load(:customer).latest, 'out_of_delivery']
     when 'delivered'
-      [Order.latest.delivered, 'delivered']
+      [Order.delivered.eager_load(:customer).latest, 'delivered']
     end
   end
 
