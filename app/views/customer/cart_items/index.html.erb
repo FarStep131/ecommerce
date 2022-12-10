@@ -93,6 +93,9 @@
         <span class="font-semibold text-lg uppercase">total</span>
         <span class="font-semibold text-lg"><%= number_to_currency(@total + POSTAGE, unit: "¥", strip_insignificant_zeros: true) %></span>
       </div>
+      <%= button_to checkouts_path, data: { turbo: false }, class:'w-full cursor-pointer focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2' do %>
+        Checkout
+      <% end %>
     </div>
   </div>
 <% end %>

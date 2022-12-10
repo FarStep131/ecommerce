@@ -18,6 +18,8 @@ Rails.application.routes.draw do
         patch 'decrease'
       end
     end
+    resources :checkouts, only: [:create]
+    resources :webhooks, only: [:create]
   end
 
   get '/up/', to: 'up#index', as: :up
