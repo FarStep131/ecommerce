@@ -28,6 +28,12 @@ Rails.application.routes.draw do
         get 'success'
       end
     end
+    resources :customers do
+      collection do
+        get 'confirm_withdraw'
+        patch 'withdraw'
+      end
+    end
   end
 
   get '/up/', to: 'up#index', as: :up
