@@ -19,4 +19,4 @@ test:
 
 production:
   <<: *default
-  database: <%= ENV.fetch("POSTGRES_DB") { "ecommerce" } %>_production
+  database: <%= ENV.fetch("POSTGRES_DB") { "ecommerce" } %>
