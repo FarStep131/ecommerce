@@ -30,3 +30,7 @@ yarn-debug.log*
 docker-compose.override.yml
 
 /config/credentials/development.key
+
+/config/master.key
+
+/config/credentials/production.key
