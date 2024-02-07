@@ -28,6 +28,7 @@ RUN yarn install
 
 ARG RAILS_ENV="production"
 ARG NODE_ENV="production"
+ARG SECRET_KEY_BASE
 ENV RAILS_ENV="${RAILS_ENV}" \
     NODE_ENV="${NODE_ENV}" \
     PATH="${PATH}:/home/ruby/.local/bin:/node_modules/.bin" \
@@ -36,7 +37,7 @@ ENV RAILS_ENV="${RAILS_ENV}" \
 COPY --chown=ruby:ruby . .
 
 RUN if [ "${RAILS_ENV}" != "development" ]; then \
-  SECRET_KEY_BASE=dummyvalue rails assets:precompile; fi
+  SECRET_KEY_BASE=${SECRET_KEY_BASE} rails assets:precompile; fi
 
 CMD ["bash"]
 
