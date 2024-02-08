@@ -40,16 +40,16 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
-  config.action_mailer.default_url_options = { protocol: 'https', host: 'web-tusj.onrender.com' }
+  config.action_mailer.default_url_options = { protocol: 'https', host: 'worker-tq00.onrender.com' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     address: 'smtp.gmail.com',
     domain: 'gmail.com',
-    port: 25,
+    port: 587,
     user_name: Rails.application.credentials.dig(:gmail, :email),
     password: Rails.application.credentials.dig(:gmail, :app_password),
     authentication: :login
-  } 
+  }
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
